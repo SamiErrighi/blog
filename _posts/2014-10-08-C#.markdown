@@ -1,0 +1,34 @@
+---
+layout: post
+title:  "programmation orienté objet (C#)"
+date:   2014-10-08 19:17:02
+categories: Langages
+---
+
+A la licence nous avons enfin notre premier cours sur la programmation orienté objet avec le petit C#
+
+Au début j'étais plutôt sceptique d'utiliser du C# principalement à cause de son typage fort, un entier est un entier en gros "on ne mélange pas les torchons avec les serpillère .
+
+Au final j'ai été plutôt agréablement surpris, certes le typage fort est là, mais bien souvent cela n'est pas plus mal .
+
+Ca nous oblige à faire attention à ce que l'on développe contrairement à notre cher ami PHP qui nous permet de faire tout et n'importe quoi ...
+
+Pour la semaine de cours:
+Nous avons vu les bases de la programmation orienté objet les classes , instance de classes, constrcuteur, méthodes public privé et protected .
+
+L'héritage de classes, et les interfaces .
+
+Nous avons ensuite fait un petit tp, nous devions développer un super jeu de combats de gladiateurs une chose qui m'a plutôt plu sur le C# c'est la possibilité de boucler sur un type d'objet exemple:
+
+{% highlight C# %}
+foreach (Arme arme in this.equipementArmes) {
+    //mon code
+}
+{% endhighlight %}
+
+Si je devais avoir un petit regret ça serait l'absence de cours sur les design patterns nous avons seulement vu rapidement le singleton :(
+
+Vous pouvez retrouver le code source du jeu ici [gladiator-gh]
+
+[gladiator-gh]: https://github.com/SamiErrighi/gladiator-tp/tree/master/gladiator-combat
+

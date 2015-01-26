@@ -1,0 +1,190 @@
+---
+layout: post
+title:  "Javascripts: NodeJs, AngularJs"
+date:   2014-11-11 19:17:02
+categories: Javascripts
+---
+
+Nous avons pu avoir notre premier cours de javascript au sommaire notion de base oblige et très vite des TP.
+
+Une chose intéressante à noter est l'évolution fulgurante du javascript au début il était juste bon à manipuler le dom et c'est toujours le cas, mais nous développons de plus en plus de "single page application" complexe et maintenable sur le long termes d'où l'arriver de framework javascript comme angularJs .
+
+#### Angular so sexy
+
+Ce genre de framework est très pratique en plus de vous imposer une structure à votre application javascript vous n'avez plus besoin de mettre à jour le DOM Angular s'en occupe pour vous avec son principe de two-way-binding.
+
+Vous avez seulement quelque principe de base :
+* Les controllers (servira à définir les actions)
+
+{% highlight javascript %}
+    app.controller('gameCtrl', ['$scope','gamesService', function($scope, gamesService){
+        $scope.response = {}
+        $scope.checkHours = function(){
+            $scope.popupImage = "loose";
+            $scope.showMessage = true;
+            $scope.hours = gamesService.hoursToString();
+            if(gamesService.win()){
+                $scope.popupImage = "win";
+                $scope.showMessage = false;
+            }
+        }
+
+        $scope.hidePopup = function() {
+            gamesService.showPopup = false;
+        }
+
+        $scope.replay = function(){
+            gamesService.resetGame();
+            gamesService.startGame();
+            $scope.titre = gamesService.whichTime();
+            gamesService.clock.setTime(gamesService.hours, gamesService.minutes);
+        }
+    }]);
+{% endhighlight %}
+
+* Les services (plus ou moins la représentation de vos models)
+{% highlight javascript %}
+app.service('gamesService', [function () {
+    return {
+        hours: 0,
+        minutes: 0,
+        response: null,
+        showPopup: false,
+        clock: null,
+        clockChoice: "img/clock1.png",
+        clocks: function(){
+
+            return ["img/clock1.png", "img/clock2.png", "img/clock3.png"]
+        },
+
+        startGame: function(){
+            this.clock = new Clock();
+            this.clock.changeBackgroundClock(this.clockChoice)
+            this.initHours();
+        },
+        //init hours ramdomly
+        initHours: function() {
+            this.hours =  _.random(0,23); 
+            this.minutes = Math.floor(Math.random()*11)*5;
+            this.response =  {hours: 0, minutes: 0}
+        },
+        //check if is top or bottom arrow
+        //return integer
+        checkArrow: function(value, attrs, element) {
+            if(element.hasClass('arrow-top')){
+                value ++;
+            }else {
+                value--;
+            }
+            return this.checkType(attrs.switch, value);
+        },
+
+        hoursToString: function(){
+            return this.hours+':'+this.minutes;
+        },
+
+        //check if is hours or minutes 
+        //return integer
+        checkType: function(type, value){
+            if(type == "hours") {
+                if(value > 23 ){
+                    value = 0;
+                }else if(value < 0){
+                    value = 23;
+                }
+                this.response.hours = value;
+            }else{
+                if(value > 59 ){
+                    value = 0;
+                }else if(value < 0){
+                    value = 59;
+                }
+                this.response.minutes = value;
+            }
+            return value
+        },
+
+        //check if is morning/afternoon 
+        //return string
+        whichTime: function(){
+            if(this.hours >= 12 && this.hours <= 17){
+                return "Après midi";
+            }else if(this.hours >= 1 && this.hours <= 11){
+                return "Matin";
+            }else{
+                return "Soir";
+            }
+        },
+
+        //check if is win
+        //return boolean
+        win: function(){
+            this.showPopup = true;
+            if(this.response.hours == this.hours && this.response.minutes == this.minutes) {
+                return true;
+            }else{
+                return false;
+            }
+        },
+
+        resetGame: function(){
+            this.showPopup = false;
+        }
+    }
+}]);
+{% endhighlight %}
+
+* directive (c'est ici ou on manipule le dom)
+{% highlight javascript %}
+//init clock with kineticjs
+app.directive('horloge', ['gamesService', function(gamesService) {
+    return {
+        restrict: 'A',
+        controler: "gameCtrl",
+        link: function (scope, element) {
+            gamesService.startGame();
+            scope.titre = gamesService.whichTime();
+            gamesService.clock.setTime(gamesService.hours, gamesService.minutes);
+        }
+    };
+}]);
+{% endhighlight %}
+
+et c'est tout !!! c'est ce qui fait d'angular un framework très populaire c'est très simple de monter en compétence et surtout ont développe un trucs qui a de la gueule super rapidement que demande le peuple ?
+
+#### Pourquoi je n'aime pas Angular
+
+Que demande le peuple hein ? hum et bien j'ai un petit souci avec angular je le trouve génial quand il s'agit de développer des applications moyens/simples, mais quand notre application grandit le two-way-binding peut devenir à véritable cauchemar.
+
+En effet la façon de gérer son two-way-binding et aussi simple que flippant angular va vérifier l'ancien scope avec le nouveau scope ça veut dire que si vous avez 100 variables définit dans votre scope et que vous en modifiez une angular va vérifier si toutes les variables ont été modifiés ...
+
+Après c'est un choix à faire :)
+
+#### Un petit Mot sur NodeJs
+
+NodeJs un serveur complètement écrit en javascript la première fois que j'en ai entendu parlé j'ai vraiment eu du mal on m'a toujours tdit que javascript est un langage côté client à l'instar de PHP PYTHON RUBY qui sont des langages serveurs.
+
+Aujourd'hui avec NodeJs c'est faux javascript devient lui aussi un langage serveur et en plus de ça NodeJs est super rapide.
+
+Si Node.js est rapide, cela tient principalement à deux choses : le moteur V8 et son fonctionnement non bloquant.
+
+#### Le moteur V8
+
+Node.js utilise le moteur d'exécution ultrarapide V8 de Google Chrome. Ce moteur V8 avait fait beaucoup parler de lui à la sortie de Google Chrome, car c'est un outil open source créé par Google qui analyse et exécute du code JavaScript très rapidement.
+
+#### Le modèle non bloquant
+
+Comme JavaScript est un langage conçu autour de la notion d'évènement, Node.js a pu mettre en place une architecture de code entièrement non bloquante.
+
+Chaque tâche est lancé en parallèle et nom dans l'ordre à la quel elle a été écrit.
+
+Petit coup de coeur sur Node.js on peut écrire son application en coffee script qui est fortement inspiré de Ruby :).
+
+Source tp:
+[tp-ce2][tp-ce2]
+[kinetic-js][kinetic-js]
+[tp-memory][tp-memory]
+
+[tp-ce2]: https://github.com/SamiErrighi/tp-horloge-ce2
+[kinetic-js]: https://github.com/SamiErrighi/kinetic-tp
+[tp-memory]: https://github.com/SamiErrighi/tp-memory

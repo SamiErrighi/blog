@@ -1,0 +1,78 @@
+---
+layout: post
+title:  "Ruby et Ruby On Rails"
+date:   2014-10-11 19:17:02
+categories: Framework
+---
+Cela fait quelques semaines que nous avons commencé notre premier projet à là LP, le fameux projet 0 débute avec mon Framework favori Ruby On Rails, si ça, c'est pas de la chance.
+
+Le sujet? développer une application web pour le campus de l'université de Cergy-Pontoise .
+
+### Que dire de Ruby ?
+
+#### Un peu d'histoire
+
+Ruby est un langage de programmation libre. Il est interprété, orienté objet et multi-paradigme. Le langage a été standardisé au Japon en 2011 (JIS X 3017:2011)2, et en 2012 par l'Organisation internationale de normalisation (ISO 30170:2012)3.
+
+Ruby est né en 1995 sous licence libre par Yukihiro « Matz » Matsumoto.
+
+Merci à wikipedia pour cette précieuse information, une chose intéressante avec ruby et son framework Ruby On Rais est qu'il est un peu le papa de tous les frameworks web du moins au niveau de la structuration.
+
+En effet Ruby On Rails a été le premier à mettre en place une structure MVC pour organiser ses projets web.
+
+A sa sortie beaucoup de startup on décidés de démarrer leurs projets à l'aide de se framework... à leurs risquent et péril.
+
+Pourquoi tout simplement parce qu'à l'époque le framework et le langage était jeune, comme dit par notre petit wikipedia ruby est un langage interprété et,  il n'existait qu'un seul intérpréteur MONGREL qui était tout simplement impossible à gérer sur le long terme.
+
+Ce qui a conduit à un souci de scalabilité pas mal d'entreprise connue ont décidé de changer de langage cf twitter.
+
+Mais aujourd'hui Ruby a de l'expérience et beaucoup d'interpréteurs... l'arrivée de nginx en serveur et de puma en  ont permis d'avoir une base solide en multi-thread donc adieux les problèmes de scalabilité.
+
+
+#### Ruby ça ressemble à quoi ?
+
+Ruby est un langage de programmation entièrement pensé en objet ce qui le rend plutôt agréable à manipuler surtout quand on vient d'un langage comme PHP qui aura prit son temps pour avoir de l'objet "potable".
+
+La plupart des développeurs auront du mal avec la synthaxe du langage, en effet en ruby vous écrivez moins pour produire plus si c'est pas merveilleux, vous pouvez donc dire adieux aux point virgule , accolades et bien d'autres :
+
+{% highlight ruby %}
+
+def print_hi(name)
+
+puts "Hi, #{name}"
+
+end
+
+{% endhighlight %}
+
+Ceci et la manière de définir une fonction en ruby sous forme de block, le mot clef def suivi du nom de votre méthode ainsi que les possibles paramètres, au lieu des accolades on utilise le mot clef end .
+
+A noter qu'une méthode en ruby par convention return toujours la dernière ligne de code.
+
+#### Ruby On Rails les avantages ?
+
+Ruby On rails vous l'aurez deviné est framework écrit en ruby contrairement à bon nombre de framework PHP comme symfony ruby on rails est un Framework de conventions, cela implique qu'un certain nombre de choix ont déjà été prit par les développeurs et pour les développeurs, lorsque vous travaillez à plusieurs c'est très pratique pour produire vite et bien.
+
+L'un des autres avantage est son côté api, en rails il est très simple d'en créer une un exemple simple quand vous déclarez des routes vous déclarez des resources une resource vient définir un certain nombre du url en GET, POST, DELETE, PUT/PATCH bref des conventions rest.
+exemple : 
+
+{% highlight ruby %}
+resources :users
+
+donnera ceci :
+GET /users
+GET /users/:id/show
+GET /users/:id/edit
+GET /users/new
+POST /users
+PUT /users/:id
+DELETE /users/:id
+
+{% endhighlight %}
+
+
+Check out the [Jekyll docs][jekyll] for more info on how to get the most out of Jekyll. File all bugs/feature requests at [Jekyll’s GitHub repo][jekyll-gh]. If you have questions, you can ask them on [Jekyll’s dedicated Help repository][jekyll-help].
+
+[jekyll]:      http://jekyllrb.com
+[jekyll-gh]:   https://github.com/jekyll/jekyll
+[jekyll-help]: https://github.com/jekyll/jekyll-help

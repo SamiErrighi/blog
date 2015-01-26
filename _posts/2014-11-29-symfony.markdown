@@ -1,0 +1,100 @@
+---
+layout: post
+title:  "Symfony 2"
+date:   2014-11-29 19:17:02
+categories: PHP
+---
+
+Cette semaine nous avons eu un cours sur Symfony 2 un framework web écrit en php, populaire en France et en Europe .
+
+Si il y a bien un framework qui me fait aimer un peu php c'est bien symfony , ce n'est pas facile de rentrer dans le framework on passe beaucoup de temps à écrire des fichiers de configuration.
+
+L'un des points intéressant de symfony est son système de bundle pour faire simple un bundle est la représentation d'une mini app de notre projet SF2.
+
+Avec l'arriver de composer c'est vraiment devenu facile d'installer symfony
+
+```sh
+$ composer create-project symfony/framework-standard-edition path/
+```
+
+Cette commande aura pour effet de créer un projet symfony avec tout ces bundles en dépendence dans le dossier vendor.
+Libre à vous d'ajouter d'autres bundles dans le composer.json comme FOSUserBundle.
+
+pour mêttre à jour notre dossier vendor il suffit de faire ceci :
+
+```sh
+$ composer update --lock
+```
+
+L'un des principes qui m'a séduit dans symfony sont les services dans le meilleur des mondes si l'on veut développer un bon projet symfony tout doit être écrit sous forme de services .
+
+### Qu'est-ce qu'un service ?
+
+Un service est simplement un objet PHP qui remplit une fonction, associé à une configuration.
+
+Cette fonction peut être simple : envoyer des e-mails, vérifier qu'un texte n'est pas un spam, etc. Mais elle peut aussi être bien plus complexe : gérer une base de données (le service Doctrine !), etc.
+
+exemple de service :
+
+{% highlight php %}
+<?php
+/**
+ * Created by PhpStorm.
+ * User: sami
+ * Date: 17/12/2014
+ * Time: 12:17
+ */
+
+namespace Gladiator\Bundle\Validator\Constraints;
+
+use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\ConstraintValidator;
+use Doctrine\ORM\EntityManager;
+use Symfony\Component\Security\Core\SecurityContext;
+use Symfony\Component\HttpFoundation\RequestStack as Request;
+
+class UniqueNameEquipeValidator extends ConstraintValidator
+{
+    private $em;
+    private $user;
+    private $request;
+    private $id;
+
+    public function __construct(EntityManager $em, SecurityContext $user, Request $request)
+    {
+        $this->em = $em;
+        $this->user = $user;
+        $this->request = $request;
+        $this->id = $this->request->getCurrentRequest()->attributes->get("id");
+    }
+
+    public function validate($value, Constraint $constraint)
+    {
+        $user = $this->user->getToken()->getUser();
+        $result = $this->em
+            ->getRepository('GladiatorBundle:Equipe')
+            ->isUnique($user->getId(), $value, $this->id)
+        ;
+
+        if(!$result) {
+            $this->context->addViolation($constraint->message, array('%string%' => $value));
+        }
+    }
+} 
+{% endhighlight %}
+
+Comme je l'ai dit symfony est un framework de configuration donc pour que ce service fonctionne il faut le déclarer dans son service.yml comme ceci:
+
+{% highlight yaml %}
+services:
+    validator.unique.equipe_name:
+        class: Gladiator\Bundle\Validator\Constraints\UniqueNameEquipeValidator
+        arguments: [@doctrine.orm.entity_manager, @security.context, @request_stack]
+        tags:
+            - { name: validator.constraint_validator, alias: equipe_unique }
+{% endhighlight %}
+
+Bref symfony c'est pas mal pour de gros sites web mais si je dois travailler avec une api ça ne sera pas mon premier choix.
+De plus si vous débutez en objet et sur les frameworks en général je vous conseille d'abord de vous faire la main avec laravel plus simple à prendre en main .
+
+

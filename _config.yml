@@ -1,0 +1,13 @@
+# Site settings
+title: Bog Sami Errighi
+email: sami.errighi@gmail.com
+description: > # this means to ignore newlines until "baseurl:"
+  Sami Errighi développeur web et web mobile préparant 
+  une licence pro à l'université de Cergy Pontoise
+baseurl: "" # the subpath of your site, e.g. /blog/
+url: "http://yourdomain.com" # the base hostname & protocol for your site
+twitter_username: jekyllrb
+github_username:  jekyll
+
+# Build settings
+markdown: kramdown
