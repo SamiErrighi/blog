@@ -4,8 +4,8 @@ email: sami.errighi@gmail.com
 description: > # this means to ignore newlines until "baseurl:"
   Sami Errighi développeur web et web mobile préparant 
   une licence pro à l'université de Cergy Pontoise
-baseurl: "/samierrighi.github.io" # the subpath of your site, e.g. /blog/
-url: "http://samierrighi.github.io/" # the base hostname & protocol for your site
+baseurl: "" # the subpath of your site, e.g. /blog/
+url: "http://yourdomain.com" # the base hostname & protocol for your site
 twitter_username: jekyllrb
 github_username:  jekyll
 
