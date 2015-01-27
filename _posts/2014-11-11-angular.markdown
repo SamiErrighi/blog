@@ -1,8 +1,8 @@
 ---
 layout: post
-title:  "Javascripts: NodeJs, AngularJs"
+title:  "Javascript: NodeJs, AngularJs"
 date:   2014-11-11 19:17:02
-categories: Javascripts
+categories: Javascript
 ---
 
 Nous avons pu avoir notre premier cours de javascript au sommaire notion de base oblige et très vite des TP.
